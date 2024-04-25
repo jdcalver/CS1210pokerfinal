@@ -28,6 +28,7 @@ def odds(x, y):
         card1 = 0
         card2 = 0
         if x[1] == y[1]:
+            suit = x[1]
             totalCard += 2
             for val in community_cards:
                if val[1] == x[1] or val[1] == y[1]:
@@ -51,37 +52,51 @@ def odds(x, y):
             elif card1 == card2:
                 return "A flush is not possible"
         prob = (13 - totalCard) * 4
-        return (f"the probability of hitting another {suit} is {prob}%")
-    if hand == "Two Pair":
+        return (f"the probability of hitting another {suit} "
+                f"to get a flush is {prob}%")     
+    if hand == "Three of a kind":
         needed = ""
-        totalCard = 0
         card1 = 0
         card2 = 0
+        totalCard = 0
         if x[0] == y[0]:
             needed = x[0]
             totalCard += 2
             for val in community_cards:
-                if val[0] == x[0]:
-                    totalCard += 1
-        elif x[0] != y[0]:
+                if val[0] == x[0] or val[0] == y[0]:
+                    print("You have a three of a kind!")
+                elif val[0] != x[0] or val [0] != y[0]:
+                    pair_prob = (2/47) * 100
+                    return(f"The probability of hitting another {needed} "
+                           f"to get a three of a kind is {pair_prob:.2f}%.")
+        if x[0] != y[0]:
+            card1 += 1
+            card2 += 1
             for val in community_cards:
                 if val[0] == x[0]:
                     card1 += 1
                 elif val[0] == y[0]:
                     card2 += 1
-            if card1 > card2:
-                needed = x[0]
-                totalCard = card1
-            elif card1 < card2:
-                needed = y[0]
-                totalCard = card2
-            #elif totalCard < 2:
-                #print("A two pair is not possible")
-        prob = ((47 - totalCard) * 4) / 100
-        return(f"The probability of hitting another {needed} is {prob}%")
-    #COME BACK TO THIS
-        
-    if hand == "Three of a kind":
+            if card1 >= 3 or card2 >= 3:
+                return("You have a three of a kind")
+            elif card1 == 0 and card2 == 0:
+                for val in community_cards:
+                    lst = []
+                    lst.append(val[0])
+                for i in range(1, len(lst)):
+                    if lst[i-1] == lst[i]:
+                        totalCard += 1
+            else:
+                if card1 > card2:
+                    needed = x[0]
+                    totalCard = card1
+                elif card1 < card2:
+                    needed = y[0]
+                    totalCard = card2
+        prob = (totalCard / 47) * 100
+        return(f"The probability of hitting another {needed} "
+               f"to get a three of a kind is {prob:.2f}%")
+    if hand == "Four of a kind":
         needed = ""
         card1 = 0
         card2 = 0
@@ -90,26 +105,33 @@ def odds(x, y):
             totalCard += 2
             for val in community_cards:
                 if val[0] == x[0] or val[0] == y[0]:
-                    print("You have a three of a kind!")
-                elif val[0] != x[0] or val [0] != y[0]:
-                    return (2 / 47) * 100
-        if x[0] != y[0]:
+                    totalCard += 1
+                if totalCard > 3:
+                    return("You have a two pair")
+        elif x[0] != y[0]:
+            card1 += 1
+            card2 += 1
             for val in community_cards:
                 if val[0] == x[0]:
                     card1 += 1
                 elif val[0] == y[0]:
                     card2 += 1
-            if card1 >= 3 or card2 >= 3:
-                print("You have a three of a kind")
-            else:
-                if card1 > card2:
-                    needed = x[0]
-                    totalCard = card1
-                elif card1 < card2:
-                    needed = y[0]
-                    totalCard = card2
-        prob = ((4 - totalCard) / 47) * 100
-        return(f"The probability of hitting another {needed} is {prob:.2f}%")
+            if card1 >= 4 or card2 >= 4:
+                return("You have a four of a kind")
+            elif card1 == 0 or card2 == 0:
+                return("Four of a kind is not possible")
+            elif card1 > card2:
+                needed = x[0]
+                totalCard = card1
+            elif card1 < card2:
+                needed = y[0]
+                totalCard = card2
+        prob = (((4 - totalCard) / 47) * 100) * 0.5
+        return (f"The probability of hitting two more {needed}'s "
+                f"to get a four of a kind is {prob:.2f}%")
+   
+                
+    
                 
             
             
