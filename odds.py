@@ -1,5 +1,5 @@
 import random
-#on flop multiply oouts by 4, on turn by 2
+import csv
 
 suits = ["spade", "heart", "diamond", "club"]
 vals = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
@@ -20,7 +20,7 @@ if card1[1] == card2[1]:
 print(f"The flop is {community_cards}")
     
 def odds(x, y):
-    hand = input("enter what hand you want to see the probability for: ")
+    hand = input("Enter what hand you want to see the probability for: ")
     if hand == "Flush":
         suit = ""
         prob = 0
@@ -52,7 +52,7 @@ def odds(x, y):
             elif card1 == card2:
                 return "A flush is not possible"
         prob = (13 - totalCard) * 4
-        return (f"the probability of hitting another {suit} "
+        return (f"The probability of hitting another {suit} "
                 f"to get a flush is {prob}%")     
     if hand == "Three of a kind":
         needed = ""
@@ -107,7 +107,7 @@ def odds(x, y):
                 if val[0] == x[0] or val[0] == y[0]:
                     totalCard += 1
                 if totalCard > 3:
-                    return("You have a two pair")
+                    return("You have a four of a kind")
         elif x[0] != y[0]:
             card1 += 1
             card2 += 1
@@ -118,8 +118,8 @@ def odds(x, y):
                     card2 += 1
             if card1 >= 4 or card2 >= 4:
                 return("You have a four of a kind")
-            elif card1 == 0 or card2 == 0:
-                return("Four of a kind is not possible")
+            elif card1 == 1 and card2 == 1:
+                return("Four a kind is not possible")
             elif card1 > card2:
                 needed = x[0]
                 totalCard = card1
@@ -129,16 +129,69 @@ def odds(x, y):
         prob = (((4 - totalCard) / 47) * 100) * 0.5
         return (f"The probability of hitting two more {needed}'s "
                 f"to get a four of a kind is {prob:.2f}%")
-   
-                
-    
-                
-            
-            
-            
+    if hand == "High card":
+        if x[0] == "Queen":
+            return("You have a Queen, that might be a high card.")
+        elif x[0] == "King":
+            print("You have a King, that might be a high card.")
+        elif x[0] == "Ace":
+            return("You have an Ace, that is definitely a high card.")
+        elif y[0] == "Queen":
+            return("You have a Queen, that might be a high card.")
+        elif y[0] == "King":
+            return("You have a King, that might be a high card.")
+        elif y[0] == "Ace":
+            return("You have an Ace, that is definitely a high card.")
     
 
 print(odds(card1, card2))
+pot = 0
+bet = input("Considering your probabilities, do you want to bet? y/n: ")
+if bet == "y":
+    amount = int(input("Let's gamble! Enter the amount you wish to raise: "))
+    pot += amount
+    print(f"OK, assuming this is a two person game "
+          f"and the blind is 5 dollars, then the "
+          f"pot is {pot + 10}$! "
+          f"Fingers crossed you win all that money!")
+elif bet == "n":
+    print("It's always smart to not gamble.")
+    
+further = input("Do you want to see the probability that your "
+                "initial cards will win? y/n: ")
+if further == "y":
+    with open("pre_flop_odds_chart.csv", newline="") as fh:
+        print("To find your cards winning probability, "
+              "rewrite using the following syntax:\n"
+              "Two Aces = Pair of A's \n"
+              "Two Kings = Pair of K's \n"
+              "Two Queens = Pair of Q's \n"
+              "Two Jacks = Pair of J's \n"
+              "Two Tens = Pair of T's \n"
+              "Two Nines = Pair of 9's \n"
+              "etc for the rest of number card pairs\n"
+              "For combinations of cards, not pairs:\n"
+              "Nine Ace suited = 9/A suited \n"
+              "Eight Ten unsuited = 8/T unsuited \n"
+              "Two Four suited = 2/4 suited \n"
+              "Make sure to include whether suited or unsuited for non-pairs\n"
+              "Also make sure to input the smaller card first\n"
+              "Be sure to follow the capitalization rules above as well")
+        response = input("Enter your cards following the rules above: ")     
+        reader = csv.reader(fh)
+        next(reader)
+        while True:
+            for row in reader:
+                if row[0] == response:
+                    print(f"With a {card1, card2} in your hand "
+                          f"You have a {row[1]} probability of winning! "
+                          f"Hopefully that {pot + 10}$ is yours!")
+                    break
+else:
+    print("Flying blind! Best of luck.")
+        
+
+
     
   
     
