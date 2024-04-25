@@ -21,9 +21,9 @@ print(f"The flop is {community_cards}")
     
 def odds(x, y):
     print("The hands you can ask to see the "
-          "probabilities for are: "
+          "probabilities of are: "
           "Flush, Three of a kind, Four of a kind, "
-          "Straight, Full House, High Card.")
+          "Straight, Full House, Pair, High Card.")
     hand = input("Enter what hand you want to see the probability for: ")
     if hand == "Flush":
         suit = ""
@@ -47,6 +47,8 @@ def odds(x, y):
                     card1 +=1
                 elif val[1] == y[1]:
                     card2 += 1
+            if card1 <= 2 and card2 <= 2:
+                return"A flush is not possible"
             if (card1 > card2):
                 suit = x[1]
                 totalCard += card1
@@ -133,7 +135,7 @@ def odds(x, y):
         prob = (((4 - totalCard) / 47) * 100) * 0.5
         return (f"The probability of hitting two more {needed}'s "
                 f"to get a four of a kind is {prob:.2f}%")
-    if hand == "High card":
+    if hand == "High Card":
         if x[0] == "Jack" and y[0] == "Queen":
             return("You have a Queen, that might be a high card.")
         elif x[0] == "Jack" and y[0] == "King":
@@ -164,7 +166,24 @@ def odds(x, y):
             return("You have an Ace, that is definitely a high card.")    
         else:
             return("You don't have a high card, uh oh.")
+    if hand  == "Pair":
+        needed1 = x[0]
+        needed2 = y[0]
+        if x[0] == y[0]:
+            return("You already have a pair")
+        for val in community_cards:
+            if val[0] == x[0]:
+                return("You already have a pair!")
+            elif val[0] == y[0]:
+                return("You already have a pair!")
+            else:
+                prob = (6 / 47) * 100
+                return(f"The odds you hit another {needed1} or "
+                       f"{needed2} to get a pair is {prob:.2f}%")
+                
+        
     
+                
 
 print(odds(card1, card2))
 pot = 0
