@@ -20,6 +20,10 @@ if card1[1] == card2[1]:
 print(f"The flop is {community_cards}")
     
 def odds(x, y):
+    print("The hands you can ask to see the "
+          "probabilities for are: "
+          "Flush, Three of a kind, Four of a kind, "
+          "Straight, Full House, High Card.")
     hand = input("Enter what hand you want to see the probability for: ")
     if hand == "Flush":
         suit = ""
@@ -130,18 +134,36 @@ def odds(x, y):
         return (f"The probability of hitting two more {needed}'s "
                 f"to get a four of a kind is {prob:.2f}%")
     if hand == "High card":
-        if x[0] == "Queen":
+        if x[0] == "Jack" and y[0] == "Queen":
             return("You have a Queen, that might be a high card.")
+        elif x[0] == "Jack" and y[0] == "King":
+            return("You have a King, that might be a high card.")
+        elif x[0] == "Jack" and y[0] == "Ace":
+            return("You have an Ace, that is definitely a high card.")
+        elif x[0] == "Queen" and y[0] == "King":
+            return("You have a King, that might be a high card.")
+        elif x[0] == "Queen" and y[0] == "Ace":
+            return("You have an Ace, that is definitely a high card.")
+        elif x[0] == "King" and y[0] == "Ace":
+            return("You have an Ace, that is definitely a high card.")
+        elif x[0] == "Queen":
+            return("You have a Queen, that might be a high card.")
+        elif x[0] =="Jack":
+            return("You have a Jack, that might be a high card.")
         elif x[0] == "King":
-            print("You have a King, that might be a high card.")
+            return("You have a King, that might be a high card.")
         elif x[0] == "Ace":
             return("You have an Ace, that is definitely a high card.")
+        elif y[0] == "Jack":
+            return("You have a Jack, that might be a high card.")
         elif y[0] == "Queen":
             return("You have a Queen, that might be a high card.")
         elif y[0] == "King":
             return("You have a King, that might be a high card.")
         elif y[0] == "Ace":
-            return("You have an Ace, that is definitely a high card.")
+            return("You have an Ace, that is definitely a high card.")    
+        else:
+            return("You don't have a high card, uh oh.")
     
 
 print(odds(card1, card2))
@@ -152,7 +174,7 @@ if bet == "y":
     pot += amount
     print(f"OK, assuming this is a two person game "
           f"and the blind is 5 dollars, then the "
-          f"pot is {pot + 10}$! "
+          f"pot is {pot + 10:,}$! "
           f"Fingers crossed you win all that money!")
 elif bet == "n":
     print("It's always smart to not gamble.")
@@ -185,7 +207,7 @@ if further == "y":
                 if row[0] == response:
                     print(f"With a {card1, card2} in your hand "
                           f"You have a {row[1]} probability of winning! "
-                          f"Hopefully that {pot + 10}$ is yours!")
+                          f"Hopefully that pot of {pot + 10:,}$ is yours!")
                     break
 else:
     print("Flying blind! Best of luck.")
