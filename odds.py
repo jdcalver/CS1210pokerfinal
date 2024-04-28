@@ -6,6 +6,7 @@ def odds(x, y):
           "probabilities of are: "
           "Flush, Three of a kind, Four of a kind, "
           "Straight, Full House, Pair, High Card.")
+    
     hand = input("Enter what hand you want to see the probability for: ")
     if hand == "Flush":
         suit = ""
@@ -95,12 +96,18 @@ def odds(x, y):
         card2 = 0
         totalCard = 0
         if x[0] == y[0]:
+            needed = x[0]
             totalCard += 2
             for val in community_cards:
                 if val[0] == x[0] or val[0] == y[0]:
                     totalCard += 1
-                if totalCard > 3:
-                    return("You have a four of a kind")
+            if totalCard > 3:
+                return("You have a four of a kind")
+            else:
+                pair_prob = (((4 - totalCard) / 47) * 100) * 0.5
+                return(f"The probability of hitting more "
+                       f"{needed}'s to get a four of a kind "
+                       f"is {pair_prob:.2f}%")
         elif x[0] != y[0]:
             card1 += 1
             card2 += 1
@@ -222,7 +229,7 @@ if __name__ == '__main__':
     else:
         print("Flying blind! Best of luck.")
     
-    print(f"Your cards are {card1} {card2}.") 
+    
     print(f"The flop is {community_cards}")
 
     print(odds(card1, card2))
@@ -240,7 +247,7 @@ if __name__ == '__main__':
         
  
         
-
+#FIX FOUR OF A KIND
 
     
   
